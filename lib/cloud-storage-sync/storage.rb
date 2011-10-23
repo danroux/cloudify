@@ -10,15 +10,15 @@ module CloudStorageSync
     end
 
     def connection
-      @connection ||= Fog::Storage.new(self.config.fog_options)
+      @connection ||= Fog::Storage.new(self.config.credentials)
     end
 
     def bucket
-      @bucket ||= connection.directories.get(self.config.aws_bucket)
+      @bucket ||= connection.directories.get(self.config.assets_directory)
     end
 
-    def keep_existing_remote_files?
-      self.config.existing_remote_files?
+    def force_deletion_sync?
+      self.config.force_deletion_sync?
     end
 
     def path
@@ -26,7 +26,7 @@ module CloudStorageSync
     end
 
     def local_files
-      Dir["#{path}/assets/**/**"].map { |f| f[path.length+1,f.length-path.length] }
+      Dir["#{path}/assets/**/*"].map { |f| f[path.length+1,f.length-path.length] }
     end
 
     def get_remote_files
