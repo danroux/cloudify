@@ -1,24 +1,13 @@
 require 'fog'
+require 'active_model'
+require 'erb'
+require "cloud-storage-sync/cloud-storage-sync"
+require 'cloud-storage-sync/config'
+require 'cloud-storage-sync/storage'
 
-module CloudStorageSync
-  
-  module ClassMethods
-    
-    def storage
-      @storage ||= Fog::Storage.new({
-        :aws_access_key_id      => 'AKIAJHNPUUH5M6JQZHPQ',
-        :aws_secret_access_key  => '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',
-        :provider               => 'AWS'
-      })
-    end
-  
-    def directory
-      @directory ||= storage.directories.get('test.tractical.com')
-    end
-    
-  end
-  
-end
+
+require 'cloud-storage-sync/railtie' if defined?(Rails)
+require 'cloud-storage-sync/engine'  if defined?(Rails)
 
 ## 
 

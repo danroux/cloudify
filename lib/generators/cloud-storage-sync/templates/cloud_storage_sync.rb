@@ -8,5 +8,5 @@ CloudStorageSync.configure do |config|
   config.rackspace_api_key = ENV['RACKSPACE_API_KEY']
   config.rackspace_container = ENV['RACKSPACE_CONTAINER']  
   
-  config.existing_remote_files = "keep"
+  config.keep_unused_remote_files = true
 end
