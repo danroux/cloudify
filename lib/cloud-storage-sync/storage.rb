@@ -3,26 +3,27 @@ module CloudStorageSync
 
     class BucketNotFound < StandardError; end
 
-    attr_accessor :config
+    attr_accessor :credentials, :options
 
-    def initialize(config)
-      self.config = config
+    def initialize(credentials, options)
+      self.credentials = credentials
+      self.options = options
     end
 
     def connection
-      @connection ||= Fog::Storage.new(config.options)
+      @connection ||= Fog::Storage.new(credentials)
     end
 
     def bucket
-      @bucket ||= connection.directories.get(config.assets_directory)
-      raise BucketNotFound.new("Directory '#{config.assets_directory}' not found") unless @bucket
+      @bucket ||= connection.directories.get(options[:assets_directory])
+      raise BucketNotFound.new("Directory '#{options[:assets_directory]}' not found") unless @bucket
       @bucket
     end
 
     def force_deletion_sync?
-      self.config.force_deletion_sync?
+      options[:force_deletion_sync] == true
     end
-    
+
     def local_files
       Dir.glob("#{Rails.root.to_s}/public/**/*").map{|f| Digest::MD5.hexdigest(File.read(f)) }
     end
@@ -63,7 +64,7 @@ module CloudStorageSync
 
     def sync
       upload_new_and_changed_files
-      delete_unsynced_remote_files if force_deletion_sync?
+      delete_unsynced_remote_files if options.force_deletion_sync?
       STDERR.puts "Done"
     end
 

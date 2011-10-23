@@ -15,27 +15,9 @@
 
 defaults: &defaults
   provider: "aws"
-  aws_secret_access_key: "AWS_SECRET_ACCESS_KEY"
-  aws_access_key_id: "AWS_ACCESS_KEY_ID"
-
-  # You may need to specify what region your S3 bucket is in
-  # aws_region: "eu-west-1"
-  
-  ## Set 'force_deletion_sync' to true if you want to delete remote files that no longer exist locally
-  # force_deletion_sync: false
-
-development:
-  <<: *defaults
-
-  # 'assets_directory' aka bucket in aws, container in rackspace, etc.
-  assets_directory: "test_app_development"
-
+  aws_secret_access_key: "111222333444"
+  aws_access_key_id: "qwerty1234567890"
 
 test:
   <<: *defaults
-  assets_directory: "test_app_test"
-
-
-production:
-  <<: *defaults
-  assets_directory: "test_app_production"
+  assets_directory: "app_test"

@@ -12,7 +12,7 @@ module CloudStorageSync
     end
 
     def storage
-      @storage ||= Storage.new(config)
+      @storage ||= Storage.new(config.credentials, config.options)
     end
 
     def sync

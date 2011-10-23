@@ -36,6 +36,7 @@ module CloudStorageSync
     def load_yml!
       self.assets_directory = yml["assets_directory"]
       self.provider = yml["provider"].downcase
+      credentials.merge!(:provider => provider)
       case provider
       when "aws"
         requires :aws_access_key_id, :aws_secret_access_key
@@ -65,7 +66,7 @@ module CloudStorageSync
     end
     
     def options
-      credentials.merge!(:provider => provider, :force_deletion_sync => force_deletion_sync)
+      { :assets_directory => assets_directory, :force_deletion_sync => force_deletion_sync }
     end
 
   end
