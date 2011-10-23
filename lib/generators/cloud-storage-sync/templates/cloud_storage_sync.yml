@@ -11,8 +11,7 @@ development:
   <<: *defaults
   aws_bucket: "<%= app_name %>_development"
   rackspace_container: "<%= app_name %>_development"
-  # Existing pre-compiled assets on S3 will be kept
-  # existing_remote_files: keep
+  provider: "provider name e.g. amazon"
 
 test:
   <<: *defaults
@@ -23,5 +22,3 @@ production:
   <<: *defaults
   aws_bucket: "<%= app_name %>_production"
   rackspace_container: "<%= app_name %>_production"
-  # Existing pre-compiled assets on S3 will be deleted
-  # existing_remote_files: delete 
