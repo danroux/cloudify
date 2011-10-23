@@ -1,0 +1,27 @@
+defaults: &defaults
+  aws_secret_access_key: "<%= aws_secret_access_key %>"
+  aws_access_key_id: "<%= aws_access_key_id %>"
+  rackspace_username: "<%= rackspace_username %>"
+  rackspace_api_key: "<%= rackspace_api_key %>"
+  # You may need to specify what region your S3 bucket is in
+  # region: "eu-west-1"
+  existing_remote_files: keep
+
+development:
+  <<: *defaults
+  aws_bucket: "<%= app_name %>_development"
+  rackspace_container: "<%= app_name %>_development"
+  # Existing pre-compiled assets on S3 will be kept
+  # existing_remote_files: keep
+
+test:
+  <<: *defaults
+  aws_bucket: "<%= app_name %>_test"
+  rackspace_container: "<%= app_name %>_test"
+
+production:
+  <<: *defaults
+  aws_bucket: "<%= app_name %>_production"
+  rackspace_container: "<%= app_name %>_production"
+  # Existing pre-compiled assets on S3 will be deleted
+  # existing_remote_files: delete 
