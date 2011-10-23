@@ -2,10 +2,6 @@ module CloudStorageSync
 
   class << self
 
-    def config=(data)
-      @config = data
-    end
-
     def config
       @config ||= Config.new
     end

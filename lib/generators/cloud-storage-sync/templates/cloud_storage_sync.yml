@@ -1,43 +1,41 @@
+## Provider examples:
+
+# provider: rackspace  
+# rackspace_username: RACKSPACE_USERNAME
+# rackspace_api_key: RACKSPACE_API_KEY
+## If you work with the European cloud from Rackspace uncomment the following
+# rackspace_european_cloud: true
+
+# provider: google  
+# google_storage_access_key_id: GOOGLE_STORAGE_ACCESS_KEY_ID
+# google_storage_secret_access_key: GOOGLE_STORAGE_SECRET_ACCESS_KEY
+
+## CloudStorageSync supports the following providers: aws, google, ninefold and rackspace
+## For more information on which parameters are required for each provider, visit http://fog.io/1.0.0/storage/
+
 defaults: &defaults
-  aws_secret_access_key: "<%= aws_secret_access_key %>"
-  aws_access_key_id: "<%= aws_access_key_id %>"
+  provider: "provider name e.g. aws, rackspace, etc."
+  aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+  aws_access_key_id: AWS_ACCESS_KEY_ID
+
   # You may need to specify what region your S3 bucket is in
   # aws_region: "eu-west-1"
   
-  rackspace_username: "<%= rackspace_username %>"
-  rackspace_api_key: "<%= rackspace_api_key %>"
-  # If you work with the European cloud from Rackspace uncomment the following
-  # rackspace_european_cloud: true
-  
-  # set to true if you want to delete outdated remote files
+  ## Set 'force_deletion_sync' to true if you want to delete remote files that no longer exist locally
   # force_deletion_sync: false
-
 
 development:
   <<: *defaults
-  aws_bucket: "<%= app_name %>_development"
-  rackspace_container: "<%= app_name %>_development"
-  provider: "provider name e.g. amazon"
+
+  # 'assets_directory' aka bucket in aws, container in rackspace, etc.
+  assets_directory: "<%= app_name %>_development"
 
 
 test:
   <<: *defaults
-  aws_bucket: "<%= app_name %>_test"
-  rackspace_container: "<%= app_name %>_test"
+  assets_directory: "<%= app_name %>_test"
 
 
 production:
   <<: *defaults
-  aws_bucket: "<%= app_name %>_production"
-  rackspace_container: "<%= app_name %>_production"
-
-
-
-
-production:
-  provider: aws
-    aws_secret_access_key: madres
-    aws_access_key_id: key
-    aws_bucket: "test"
-
-  
+  assets_directory: "<%= app_name %>_production"
