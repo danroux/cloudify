@@ -1,7 +1,7 @@
 require 'fog'
 require 'active_model'
 require 'erb'
-require "cloud-storage-sync/cloud-storage-sync"
+require "cloud-storage-sync/cloud_storage_sync"
 require 'cloud-storage-sync/config'
 require 'cloud-storage-sync/storage'
 
