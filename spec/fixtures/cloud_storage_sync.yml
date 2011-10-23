@@ -14,7 +14,7 @@
 ## For more information on which parameters are required for each provider, visit http://fog.io/1.0.0/storage/
 
 defaults: &defaults
-  provider: "provider name e.g. aws, rackspace, etc."
+  provider: "aws"
   aws_secret_access_key: "AWS_SECRET_ACCESS_KEY"
   aws_access_key_id: "AWS_ACCESS_KEY_ID"
 
@@ -28,14 +28,14 @@ development:
   <<: *defaults
 
   # 'assets_directory' aka bucket in aws, container in rackspace, etc.
-  assets_directory: "<%= app_name %>_development"
+  assets_directory: "test_app_development"
 
 
 test:
   <<: *defaults
-  assets_directory: "<%= app_name %>_test"
+  assets_directory: "test_app_test"
 
 
 production:
   <<: *defaults
-  assets_directory: "<%= app_name %>_production"
+  assets_directory: "test_app_production"

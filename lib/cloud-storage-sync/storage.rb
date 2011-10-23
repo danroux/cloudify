@@ -10,7 +10,7 @@ module CloudStorageSync
     end
 
     def connection
-      @connection ||= Fog::Storage.new(config.credentials)
+      @connection ||= Fog::Storage.new(config.options)
     end
 
     def bucket

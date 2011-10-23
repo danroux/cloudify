@@ -4,13 +4,16 @@ module CloudStorageSync
 
     class Invalid < StandardError; end
 
-    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory
+    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory,
+      :config_path
     
     validates_presence_of :assets_directory
     validates_inclusion_of :force_deletion_sync, :in => %w(true false)
 
-    def initialize
+    def initialize(config_path=nil)
+      self.config_path = config_path || File.join(Rails.root, "config")
       self.force_deletion_sync = false
+      self.credentials = {}
       load_yml! if yml_exists?
     end
 
@@ -19,15 +22,15 @@ module CloudStorageSync
     end
 
     def yml_exists?
-      File.exists?(self.yml_path)
+      File.exists?(self.yml_file_path)
     end
 
     def yml
-      y ||= YAML.load(ERB.new(IO.read(yml_path)).result)[Rails.env] rescue nil || {}
+      y ||= YAML.load(ERB.new(IO.read(self.yml_file_path)).result)[Rails.env] rescue nil || {}
     end
 
-    def yml_path
-      File.join(Rails.root, "config/cloud-storage-sync.yml")
+    def yml_file_path
+      File.join(self.config_path, 'cloud_storage_sync.yml')
     end
 
     def load_yml!
@@ -51,18 +54,18 @@ module CloudStorageSync
     end
     
     def requires(*attrs)
-      attrs.each do |k|
+      attrs.each do |key|
         raise ArgumentError.new("#{provider.capitalize} requires #{attrs.join(', ')} in YAML configuration files") if yml[key.to_s].nil?
-        credentials.merge!(k => yml[key.to_s])
+        credentials.merge!(key => yml[key.to_s])
       end
     end
         
     def recognizes(*attrs)
-      attrs.each{|k| credentials.merge!(k => yml[key.to_s])}
+      attrs.each{|key| credentials.merge!(key => yml[key.to_s])}
     end
     
-    def credentials
-      credentials.merge(:provider => provider, :force_deletion_sync => force_deletion_sync)
+    def options
+      credentials.merge!(:provider => provider, :force_deletion_sync => force_deletion_sync)
     end
 
   end
