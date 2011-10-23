@@ -1,12 +1,9 @@
 CloudStorageSync.configure do |config|
-  config.aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-  config.aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
-  config.aws_bucket = ENV['AWS_BUCKET']
-  # config.aws_region = "eu-west-1"
-  
-  config.rackspace_username = ENV['RACKSPACE_USERNAME']
-  config.rackspace_api_key = ENV['RACKSPACE_API_KEY']
-  config.rackspace_container = ENV['RACKSPACE_CONTAINER']  
-  
-  config.keep_unused_remote_files = true
+  config.aws_secret_access_key = 'AWS_SECRET_ACCESS_KEY'
+  config.aws_access_key_id = 'AWS_ACCESS_KEY_ID'
+
+  # 'assets_directory' aka bucket in aws, container in rackspace, etc.
+  config.assets_directory = 'ASSETS_DIRECTORY'
+
+  config.force_deletion_sync = false
 end
