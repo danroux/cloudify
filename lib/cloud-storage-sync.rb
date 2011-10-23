@@ -74,5 +74,3 @@ puts ""
 
 STDOUT.sync = false # Done with progress output.
 
-
-

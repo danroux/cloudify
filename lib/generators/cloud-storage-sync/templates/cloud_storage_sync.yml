@@ -1,11 +1,17 @@
 defaults: &defaults
   aws_secret_access_key: "<%= aws_secret_access_key %>"
   aws_access_key_id: "<%= aws_access_key_id %>"
+  # You may need to specify what region your S3 bucket is in
+  # aws_region: "eu-west-1"
+  
   rackspace_username: "<%= rackspace_username %>"
   rackspace_api_key: "<%= rackspace_api_key %>"
-  # You may need to specify what region your S3 bucket is in
-  # region: "eu-west-1"
-  keep_unused_remote_files: true
+  # If you work with the European cloud from Rackspace uncomment the following
+  # rackspace_european_cloud: true
+  
+  # set to true if you want to delete outdated remote files
+  # force_deletion_sync: false
+
 
 development:
   <<: *defaults
@@ -13,12 +19,25 @@ development:
   rackspace_container: "<%= app_name %>_development"
   provider: "provider name e.g. amazon"
 
+
 test:
   <<: *defaults
   aws_bucket: "<%= app_name %>_test"
   rackspace_container: "<%= app_name %>_test"
 
+
 production:
   <<: *defaults
   aws_bucket: "<%= app_name %>_production"
   rackspace_container: "<%= app_name %>_production"
+
+
+
+
+production:
+  provider: aws
+    aws_secret_access_key: madres
+    aws_access_key_id: key
+    aws_bucket: "test"
+
+  
