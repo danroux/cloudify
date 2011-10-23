@@ -4,26 +4,19 @@ module CloudStorageSync
 
     class Invalid < StandardError; end
 
-    attr_accessor :provider
-    attr_accessor :aws_secret_access_key, :aws_access_key_id, :aws_bucket, :aws_region
-    attr_accessor :rackspace_username, :rackspace_api_key, :rackspace_container
-    attr_accessor :keep_unused_remote_files
-
-    validates_presence_of :aws_secret_access_key, :aws_access_key_id, :aws_bucket
-    validates_presence_of :rackspace_username, :rackspace_api_key, :rackspace_container
-    validates_inclusion_of :keep_unused_remote_files, :in => %w(true false)
+    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory
+    
+    validates_presence_of :assets_directory
+    validates_inclusion_of :force_deletion_sync, :in => %w(true false)
 
     def initialize
-      self.provider = 'AWS'
-      self.aws_region = nil
-      self.existing_remote_files = 'keep'
+      self.force_deletion_sync = false
       load_yml! if yml_exists?
     end
 
-    def existing_remote_files?
-      (self.existing_remote_files == "keep")
+    def force_deletion_sync?
+      self.force_deletion_sync == true
     end
-
 
     def yml_exists?
       File.exists?(self.yml_path)
@@ -34,31 +27,42 @@ module CloudStorageSync
     end
 
     def yml_path
-      File.join(Rails.root, "config/asset_sync.yml")
+      File.join(Rails.root, "config/cloud-storage-sync.yml")
     end
 
     def load_yml!
-      self.aws_access_key         = yml["aws_access_key"] if yml.has_key?("aws_access_key")
-      self.aws_access_secret      = yml["aws_access_secret"] if yml.has_key?("aws_access_secret")
-      self.aws_bucket             = yml["aws_bucket"] if yml.has_key?("aws_bucket")
-      self.aws_region             = yml["aws_region"] if yml.has_key?("aws_region")
-      self.existing_remote_files  = yml["existing_remote_files"] if yml.has_key?("existing_remote_files")
-
-      # TODO deprecate old style config settings
-      self.aws_access_key         = yml["access_key_id"] if yml.has_key?("access_key_id")
-      self.aws_access_secret      = yml["secret_access_key"] if yml.has_key?("secret_access_key")
-      self.aws_bucket             = yml["bucket"] if yml.has_key?("bucket")
-      self.aws_region             = yml["region"] if yml.has_key?("region")
+      self.assets_directory = yml["assets_directory"]
+      self.provider = yml["provider"].downcase
+      case provider
+      when "aws"
+        requires :aws_access_key_id, :aws_secret_access_key
+        recognizes :endpoint, :region, :host, :path, :port, :scheme, :persistent
+      when "rackspace"
+        requires :rackspace_api_key, :rackspace_username
+        recognizes :rackspace_auth_url, :rackspace_servicenet, :rackspace_cdn_ssl, :persistent
+      when "google"
+        requires :google_storage_access_key_id, :google_storage_secret_access_key
+        recognizes :host, :port, :scheme, :persistent
+      when "ninefold"
+        requires :ninefold_storage_token, :ninefold_storage_secret
+      else
+        raise ArgumentError.new("#{provider} is not a recognized storage provider")
+      end
     end
-
-    def fog_options
-      options = {
-        :provider => provider, 
-        :aws_access_key_id => aws_access_key,
-        :aws_secret_access_key => aws_access_secret
-      }
-      options.merge!({:region => aws_region}) if aws_region
-      return options
+    
+    def requires(*attrs)
+      attrs.each do |k|
+        raise ArgumentError.new("#{provider.capitalize} requires #{attrs.join(', ')} in YAML configuration files") if yml[key.to_s].nil?
+        credentials.merge!(k => yml[key.to_s])
+      end
+    end
+        
+    def recognizes(*attrs)
+      attrs.each{|k| credentials.merge!(k => yml[key.to_s])}
+    end
+    
+    def credentials
+      credentials.merge(:provider => provider, :force_deletion_sync => force_deletion_sync)
     end
 
   end

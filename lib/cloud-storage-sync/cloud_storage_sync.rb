@@ -8,7 +8,6 @@ module CloudStorageSync
 
     def config
       @config ||= Config.new
-      @config
     end
 
     def configure(&proc)
@@ -17,12 +16,12 @@ module CloudStorageSync
     end
 
     def storage
-      @storage ||= Storage.new(self.config)
+      @storage ||= Storage.new(config)
     end
 
     def sync
       raise Config::Invalid.new(config.errors.full_messages.join(', ')) unless config && config.valid?
-      self.storage.sync
+      storage.sync
     end
 
   end
