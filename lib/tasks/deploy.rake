@@ -1,5 +1,5 @@
 namespace :assets do      
-  task :deploy => :environment do
+  task :deploy do
     puts "deploying"
   end
 end
