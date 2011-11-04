@@ -4,7 +4,7 @@ module CloudStorageSync
     DYNAMIC_SERVICES = [:provider, 
                         :google_storage_secret_access_key, :google_storage_access_key_id,
                         :aws_secret_access_key, :aws_access_key_id, 
-                        :rackspace_username,    :rackspace_api_key,
+                        :rackspace_username,    :rackspace_api_key, :rackspace_european_cloud,
                         :ninefold_storage_token,:ninefold_storage_secret]
 
     class Invalid < StandardError; end
