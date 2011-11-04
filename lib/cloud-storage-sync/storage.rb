@@ -64,7 +64,7 @@ module CloudStorageSync
 
     def sync
       upload_new_and_changed_files
-      delete_unsynced_remote_files if options.force_deletion_sync?
+      delete_unsynced_remote_files if options[:force_deletion_sync]
       STDERR.puts "Done"
     end
 

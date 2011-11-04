@@ -2,13 +2,11 @@ require 'rails'
 if ::Rails.version >= "3.1"
   module CloudStorageSync
     class InstallGenerator < Rails::Generators::Base
-      desc "This generator installs config/cloud_storage_sync.yml"
+      desc "This generator installs config/cloud_storage_synx.yml"
 
       class_option :use_yml, :type => :boolean, :default => false, :desc => "Use YML file instead of Rails Initializer"
 
-      def self.source_root
-        @source_root ||= File.join(File.dirname(__FILE__), 'templates')
-      end
+      source_root File.expand_path(File.join(File.dirname(__FILE__), '../templates'))
 
       def aws_secret_access_key
         "<%= ENV['AWS_SECRET_ACCESS_KEY'] %>"
@@ -32,13 +30,13 @@ if ::Rails.version >= "3.1"
 
       def generate_config
         if options[:use_yml]
-          template "asset_sync.yml", "config/asset_sync.yml"
+          template "cloud_storage_sync.yml", "config/cloud_storage_sync-2.yml"
         end
       end
 
       def generate_initializer
         unless options[:use_yml]
-          template "asset_sync.rb", "config/initializers/asset_sync.rb"
+          template "cloud_storage_sync.rb", "config/initializers/cloud_storage_sync.rb"
         end
       end
 

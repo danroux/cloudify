@@ -1,20 +1,24 @@
 module CloudStorageSync
   class Config
     include ActiveModel::Validations
+    DYNAMIC_SERVICES = [:provider, 
+                        :google_storage_secret_access_key, :google_storage_access_key_id,
+                        :aws_secret_access_key, :aws_access_key_id, 
+                        :rackspace_username,    :rackspace_api_key,
+                        :ninefold_storage_token,:ninefold_storage_secret]
 
     class Invalid < StandardError; end
 
-    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory,
-      :config_path
+    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory, :config_path
     
     validates_presence_of :assets_directory
-    validates_inclusion_of :force_deletion_sync, :in => %w(true false)
+    validates_inclusion_of :force_deletion_sync, :in => [true, false]
 
     def initialize(config_path=nil)
       self.config_path = config_path || File.join(Rails.root, "config")
       self.force_deletion_sync = false
       self.credentials = {}
-      load_yml! if yml_exists?
+      load_yml! if yml_exists? && !initializer_exists?
     end
 
     def force_deletion_sync?
@@ -26,11 +30,17 @@ module CloudStorageSync
     end
 
     def yml
-      y ||= YAML.load(ERB.new(IO.read(self.yml_file_path)).result)[Rails.env] rescue nil || {}
+      file = File.read(yml_file_path)
+      y ||= YAML.load(file)[Rails.env] rescue nil || {}
     end
 
     def yml_file_path
       File.join(self.config_path, 'cloud_storage_sync.yml')
+    end
+    
+    def initializer_exists?
+      path = File.join(config_path, "initializers", "cloud_storage_sync.rb")
+      File.exists? path
     end
 
     def load_yml!
@@ -69,5 +79,14 @@ module CloudStorageSync
       { :assets_directory => assets_directory, :force_deletion_sync => force_deletion_sync }
     end
 
+    DYNAMIC_SERVICES.each do |key|
+      variable = :"@#{key}"
+      define_method :"#{key}=" do |value|
+        self.credentials.merge!(key => value)
+        instance_variable_set variable, value 
+      end      
+
+      class_eval "def #{key}; @#{key}; end\n"
+    end
   end
 end
