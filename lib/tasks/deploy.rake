@@ -1,5 +1,7 @@
-namespace :assets do      
-  task :deploy do
-    puts "deploying"
+namespace :cloud_storage_sync do
+  desc "version"
+  task :version do
+    puts VERSION
   end
 end
+         

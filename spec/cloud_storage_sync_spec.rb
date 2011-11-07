@@ -28,3 +28,18 @@ describe CloudStorageSync, 'from yml' do
   end
 
 end
+
+describe CloudStorageSync::Config, "initializer" do
+  # INITIALIZER_PATH = File.join(File.dirname(__FILE__), "../lib/generators", "cloud_storage_sync", "templates", "cloud_storage_sync.rb")
+  # let(:config) { mock(CloudStorageSync::Config, :yml_exists? => false, :initializer_exists? => true) }
+  before do
+    CloudStorageSync::Config.stub(:initializer_exists?).and_return(true)
+    CloudStorageSync::Config.stub(:new)
+    CloudStorageSync::Config.stub_chain(:new, :credentials).and_return()
+    CloudStorageSync.stub(:configure)
+  end
+
+  it "should get the connection credentials from the initializer" do
+
+  end
+end
