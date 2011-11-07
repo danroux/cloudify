@@ -57,7 +57,7 @@ module CloudStorageSync
       bucket.files.each do |f|
         if files_to_delete.include?(f.key)
           STDERR.puts "D #{f.key}"
-          # f.destroy
+          f.destroy
         end
       end
     end
