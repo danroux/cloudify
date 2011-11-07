@@ -4,7 +4,7 @@ require "cloud-storage-sync/version"
 
 Gem::Specification.new do |s|
   s.name        = "cloud-storage-sync"
-  s.version     = Cloud::Storage::Sync::VERSION
+  s.version     = CloudStorageSync::VERSION
   s.authors     = ["Amed Rodriguez", "Javier Saldana"]
   s.email       = ["amed@tractical.com", "javier@tractical.com"]
   s.homepage    = ""
