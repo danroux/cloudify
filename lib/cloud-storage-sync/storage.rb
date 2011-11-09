@@ -25,11 +25,11 @@ module CloudStorageSync
     end
 
     def local_files
-      Dir.glob("#{Rails.root.to_s}/public/**/*").map{|f| Digest::MD5.hexdigest(File.read(f)) }
+      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map{ |f| Digest::MD5.hexdigest(File.read(f)) }
     end
     
     def remote_files
-      bucket.files.map{ |f| f.etag }
+      @remote_files ||= bucket.files.map{ |f| f.etag }
     end
 
     def upload_new_and_changed_files

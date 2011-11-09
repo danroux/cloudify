@@ -10,12 +10,6 @@ if ::Rails.version >= "3.1"
         @app_name ||= Rails.application.is_a?(Rails::Application) && Rails.application.class.name.sub(/::Application$/, "").downcase
       end
 
-      def generate_yml_config
-        if options[:use_yml]
-          template "cloud_storage_sync.yml", "config/cloud_storage_sync.yml"
-        end
-      end
-
       def generate_initializer
         unless options[:use_yml]
           template "cloud_storage_sync.rb", "config/initializers/cloud_storage_sync.rb"
