@@ -150,11 +150,12 @@ describe CloudStorageSync::Storage do
     @storage.bucket.files.length.should == 1
     Dir.stub(:glob).and_return([])
     @storage.stub(:local_files).and_return([])
-    @storage.stub(:remote_files).and_return([YML_FILE_PATH])
+    @storage.stub(:remote_files).and_return([YML_DIGEST])
     @storage.sync
     @storage.bucket.files.reload
     @storage.bucket.files.length.should == 1
     @storage.options[:force_deletion_sync] = true
+    Fog::Storage::AWS::File.any_instance.should_receive(:etag).and_return(YML_DIGEST)
     @storage.sync
     @storage.bucket.files.reload
     @storage.bucket.files.length.should == 0

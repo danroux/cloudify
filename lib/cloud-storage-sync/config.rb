@@ -34,13 +34,10 @@ module CloudStorageSync
       case provider
       when "aws"
         requires :aws_access_key_id, :aws_secret_access_key
-        #recognizes :endpoint, :region, :host, :path, :port, :scheme, :persistent
       when "rackspace"
         requires :rackspace_api_key, :rackspace_username
-        #recognizes :rackspace_auth_url, :rackspace_servicenet, :rackspace_cdn_ssl, :persistent
       when "google"
         requires :google_storage_access_key_id, :google_storage_secret_access_key
-        #recognizes :host, :port, :scheme, :persistent
       when "ninefold"
         requires :ninefold_storage_token, :ninefold_storage_secret
       else

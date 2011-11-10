@@ -55,7 +55,7 @@ module CloudStorageSync
       STDERR.puts "Deleting remote files that no longer exist locally"
       files_to_delete = (local_files | remote_files) - (local_files & remote_files)
       bucket.files.each do |f|
-        if files_to_delete.include?(f.key)
+        if files_to_delete.include?(f.etag)
           STDERR.puts "D #{f.key}"
           f.destroy
         end
@@ -64,7 +64,7 @@ module CloudStorageSync
 
     def sync
       upload_new_and_changed_files
-      delete_unsynced_remote_files if options[:force_deletion_sync]
+      delete_unsynced_remote_files if options[:force_deletion_sync] == true
       STDERR.puts "Done"
     end
 
