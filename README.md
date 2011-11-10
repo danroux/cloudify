@@ -11,7 +11,7 @@ Currently supported providers:
 ## Installation instructions
 The first thing you should do is install the gem.
 
-   gem install cloud-storage-sync
+    gem install cloud-storage-sync
 
 Now, to tell the gem your configuration options you need to do it through the initializer. The gem offers a rails generator to create this initializer which includes documentation on how to use it and what parameters are needed for each of the services currently supported.
 
