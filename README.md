@@ -8,7 +8,7 @@ Currently supported providers:
 * Rackspace Cloud Files
 * Google Storage
 
-== Installation instructions
+## Installation instructions
 The first thing you should do is install the gem.
 
    gem install cloud-storage-sync
@@ -19,26 +19,26 @@ The generator creates the file {config/initializers/cloud_storage_sync.rb}[http:
 
     rails generate cloud_storage_sync:install
 
-=== Sync assets
+### Sync assets
 
 When you're ready to send your files to the cloud all you have to do is to run the following rake task:
 
-     rake cloud_storage_sync:sync_assets
+    rake cloud_storage_sync:sync_assets
 
 If everything goes well you will see an output similar to this:
 
-   *** Syncing with aws ***
-   Uploading new and changed files
-   U public/hello.png (b55b17cc47783139c3f5dee0f3a90ce7)
-   Done
+    *** Syncing with aws ***
+    Uploading new and changed files
+    U public/hello.png (b55b17cc47783139c3f5dee0f3a90ce7)
+    Done
 
 If you have config.force_deletion_sync set to true, you would get an output like this:
 
-   *** Syncing with aws ***
-   Deleting remote files that no longer exist locally
-   D Screen shot 2011-11-03 at 12.47.03 PM.png
-   D delete_me.png
-   ...
-   Done
+    *** Syncing with aws ***
+    Deleting remote files that no longer exist locally
+    D Screen shot 2011-11-03 at 12.47.03 PM.png
+    D delete_me.png
+    ...
+    Done
 
 
