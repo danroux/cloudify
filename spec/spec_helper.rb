@@ -7,6 +7,6 @@ require "fog"
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require "cloud-storage-sync"
+require "cloud_storage_sync"
 
 Rails.env = "test"

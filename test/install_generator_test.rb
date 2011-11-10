@@ -7,7 +7,6 @@ class InstallGeneratorTest < Rails::Generators::TestCase
   setup :run_generator
 
   test "Assert all files are properly created" do
-    assert_file "config/cloud_storage_sync.yml"
     assert_file "lib/tasks/cloud_storage_sync.rake"
   end
 

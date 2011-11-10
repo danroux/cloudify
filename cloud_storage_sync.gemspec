@@ -3,10 +3,10 @@ $:.push File.expand_path("../lib", __FILE__)
 require "cloud-storage-sync/version"
 
 Gem::Specification.new do |s|
-  s.name        = "cloud-storage-sync"
-  s.version     = Cloud::Storage::Sync::VERSION
-  s.authors     = ["Amed Rodriguez", "Javier Saldana"]
-  s.email       = ["amed@tractical.com", "javier@tractical.com"]
+  s.name        = "cloud_storage_sync"
+  s.version     = CloudStorageSync::VERSION
+  s.authors     = ["Amed Rodriguez", "Javier Saldana", "Daniel Roux"]
+  s.email       = ["amed@tractical.com", "javier@tractical.com", "daniel@tractical.com"]
   s.homepage    = ""
   s.summary     = %q{Sync assets hosts}
   s.description = %q{Sync your assets hosts to Amazon & Rackspace services}

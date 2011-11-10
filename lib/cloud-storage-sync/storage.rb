@@ -25,11 +25,11 @@ module CloudStorageSync
     end
 
     def local_files
-      Dir.glob("#{Rails.root.to_s}/public/**/*").map{|f| Digest::MD5.hexdigest(File.read(f)) }
+      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map{ |f| Digest::MD5.hexdigest(File.read(f)) }
     end
     
     def remote_files
-      bucket.files.map{ |f| f.etag }
+      @remote_files ||= bucket.files.map{ |f| f.etag }
     end
 
     def upload_new_and_changed_files
@@ -55,16 +55,16 @@ module CloudStorageSync
       STDERR.puts "Deleting remote files that no longer exist locally"
       files_to_delete = (local_files | remote_files) - (local_files & remote_files)
       bucket.files.each do |f|
-        if files_to_delete.include?(f.key)
+        if files_to_delete.include?(f.etag)
           STDERR.puts "D #{f.key}"
-          # f.destroy
+          f.destroy
         end
       end
     end
 
     def sync
       upload_new_and_changed_files
-      delete_unsynced_remote_files if options.force_deletion_sync?
+      delete_unsynced_remote_files if options[:force_deletion_sync] == true
       STDERR.puts "Done"
     end
 
