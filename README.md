@@ -42,3 +42,7 @@ If you have config.force_deletion_sync set to true, you would get an output like
     Done
 
 And that's it.
+
+## Questions?
+
+If you have any questions, please feel free to contact us on Twitter: [Tractical](http://twitter.com/tractical), [Amed Rodriguez](http://twitter.com/amedse), [Javier Saldaña](http://twitter.com/javiersaldana), [Daniel Roux](http://twitter.com/danroux).
