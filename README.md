@@ -15,7 +15,7 @@ The first thing you should do is install the gem.
 
 Now, to tell the gem your configuration options you need to do it through the initializer. The gem offers a rails generator to create this initializer which includes documentation on how to use it and what parameters are needed for each of the services currently supported.
 
-The generator creates the file {config/initializers/cloud_storage_sync.rb}[http://github.com/tractical/cloud-storage-sync](example) and you run it like this:
+The generator creates the file [http://github.com/tractical/cloud-storage-sync/config/initializers/cloud_storage_sync.rb](example) and you run it like this:
 
     rails generate cloud_storage_sync:install
 
@@ -41,4 +41,4 @@ If you have config.force_deletion_sync set to true, you would get an output like
     ...
     Done
 
-
+And that's it.
