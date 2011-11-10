@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "cloud-storage-sync/version"
 
 Gem::Specification.new do |s|
-  s.name        = "cloud-storage-sync"
+  s.name        = "cloud_storage_sync"
   s.version     = CloudStorageSync::VERSION
   s.authors     = ["Amed Rodriguez", "Javier Saldana", "Daniel Roux"]
   s.email       = ["amed@tractical.com", "javier@tractical.com", "daniel@tractical.com"]
