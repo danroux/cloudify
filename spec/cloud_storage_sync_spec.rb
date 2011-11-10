@@ -140,7 +140,7 @@ describe CloudStorageSync::Storage do
     @storage = CloudStorageSync::Storage.new(@config.credentials, @config.options)
   end
 
-  it "Upload a new file and then delete it" do
+  it "Uploads a new file and then deletes it" do
     @storage.stub(:local_files).and_return([YML_DIGEST])
     Dir.stub(:glob).and_return([YML_FILE_PATH])
     @storage.local_files.length.should  == 1
