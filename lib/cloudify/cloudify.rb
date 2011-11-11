@@ -15,11 +15,12 @@ module Cloudify
     end
 
     def sync
-      config.validate
       if config && config.valid?
         storage.sync
+      elsif config && !config.valid?
+        STDERR.puts "Cloudify: #{config.errors.full_messages.join(', ')}"
       else
-        "Cloudify: Something went wrong"
+        "Cloudify: Something went wrong."
       end
     end
   end

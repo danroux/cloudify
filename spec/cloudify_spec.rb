@@ -18,6 +18,7 @@ describe Cloudify do
       it "should not be valid when google" do
         @config.provider = "google"
         @config.should_not be_valid
+        @config.errors[:provider].should be_empty
         @config.errors[:google_storage_access_key_id].should_not be_empty
         @config.errors[:google_storage_secret_access_key].should_not be_empty
       end
@@ -25,6 +26,7 @@ describe Cloudify do
       it "should not be valid when aws" do
         @config.provider = "aws"
         @config.should_not be_valid
+        @config.errors[:provider].should be_empty
         @config.errors[:aws_secret_access_key].should_not be_empty
         @config.errors[:aws_access_key_id].should_not be_empty
       end
@@ -32,6 +34,7 @@ describe Cloudify do
       it "should not be valid when rackspace" do
         @config.provider = "rackspace"
         @config.should_not be_valid
+        @config.errors[:provider].should be_empty
         @config.errors[:rackspace_username].should_not be_empty
         @config.errors[:rackspace_api_key].should_not be_empty
       end
@@ -39,8 +42,20 @@ describe Cloudify do
       it "should not be valid when ninefold" do
         @config.provider = "ninefold"
         @config.should_not be_valid
+        @config.errors[:provider].should be_empty
         @config.errors[:ninefold_storage_token].should_not be_empty
         @config.errors[:ninefold_storage_secret].should_not be_empty
+      end
+
+      it "should not be valid with wrong provider" do
+        @config.provider = "donotexist"
+        @config.should_not be_valid
+        @config.errors[:provider].should_not be_empty
+      end
+
+      it "should not be valid without assets_directory" do
+        @config.should_not be_valid
+        @config.errors[:assets_directory].should_not be_empty
       end
     end
   end
