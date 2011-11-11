@@ -1,4 +1,4 @@
-module CloudStorageSync
+module Cloudify
   class Config
     include ActiveModel::Validations
     DYNAMIC_SERVICES = [:provider, 
@@ -8,12 +8,16 @@ module CloudStorageSync
                         :rackspace_auth_url, :rackspace_servicenet, :rackspace_cdn_ssl,
                         :ninefold_storage_token,:ninefold_storage_secret,
                         :endpoint, :region, :host, :path, :port, :scheme, :persistent]
-
-    class Invalid < StandardError; end
+    PROVIDERS = ["aws", "google", "rackspace", "ninefold"]
 
     attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory, :config_path
     
     validates_presence_of  :assets_directory
+    validates_presence_of  :google_storage_access_key_id, :google_storage_secret_access_key, :if => Proc.new { |con| con.provider == "google" }
+    validates_presence_of  :aws_access_key_id, :aws_secret_access_key, :if => Proc.new { |con| con.provider == "aws" }
+    validates_presence_of  :rackspace_api_key, :rackspace_username, :if => Proc.new { |con| con.provider == "rackspace" }
+    validates_presence_of  :ninefold_storage_token, :ninefold_storage_secret, :if => Proc.new { |con| con.provider == "ninefold" }
+    validates_inclusion_of :provider, :in => PROVIDERS, :message => "%{value} is not supported."
     validates_inclusion_of :force_deletion_sync, :in => [true, false]
 
     def initialize
@@ -28,27 +32,6 @@ module CloudStorageSync
     def initializer_exists?
       path = File.join(config_path, "initializers", "cloud_storage_sync.rb")
       File.exists? path
-    end
-
-    def validate
-      case provider
-      when "aws"
-        requires :aws_access_key_id, :aws_secret_access_key
-      when "rackspace"
-        requires :rackspace_api_key, :rackspace_username
-      when "google"
-        requires :google_storage_access_key_id, :google_storage_secret_access_key
-      when "ninefold"
-        requires :ninefold_storage_token, :ninefold_storage_secret
-      else
-        raise ArgumentError.new("#{provider} is not a recognized storage provider")
-      end
-    end
-    
-    def requires(*attrs)
-      attrs.each do |key|
-        raise ArgumentError.new("#{provider.capitalize} requires #{attrs.join(', ')} in configuration files") if self.send(key).nil?
-      end
     end
     
     def options

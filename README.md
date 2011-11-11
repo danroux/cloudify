@@ -1,4 +1,4 @@
-# Cloud Storage Sync
+# Cloudify
 
 Synchronises files between your Rails application and your favorite CDN provider.
 
@@ -11,19 +11,19 @@ Currently supported providers:
 ## Installation instructions
 The first thing you should do is install the gem.
 
-    gem install cloud-storage-sync
+    gem install cloudify
 
 Now, to tell the gem your configuration options you need to do it through the initializer. The gem offers a rails generator to create this initializer which includes documentation on how to use it and what parameters are needed for each of the services currently supported.
 
-The generator creates the file [https://github.com/tractical/cloud-storage-sync/blob/master/lib/generators/cloud_storage_sync/templates/cloud_storage_sync.rb](example) and you run it like this:
+The generator creates the file [https://github.com/tractical/cloudify/blob/master/lib/generators/cloudify/templates/cloudify.rb](example) and you run it like this:
 
-    rails generate cloud_storage_sync:install
+    rails generate cloudify:install
 
 ### Sync assets
 
 When you're ready to send your files to the cloud all you have to do is to run the following rake task:
 
-    rake cloud_storage_sync:sync_assets
+    rake cloudify:sync
 
 If everything goes well you will see an output similar to this:
 

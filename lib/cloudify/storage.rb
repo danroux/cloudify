@@ -1,4 +1,4 @@
-module CloudStorageSync
+module Cloudify
   class Storage
 
     class BucketNotFound < StandardError; end

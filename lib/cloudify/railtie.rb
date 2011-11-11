@@ -1,4 +1,4 @@
-module CloudStorageSync
+module Cloudify
   class Railtie < Rails::Railtie
     railtie_name :cloud_storage_sync
 

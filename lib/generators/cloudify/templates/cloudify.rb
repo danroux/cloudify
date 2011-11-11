@@ -1,5 +1,5 @@
-CloudStorageSync.configure do |config|
-  ## CloudStorageSync supports the following providers: aws, google, ninefold and rackspace
+Cloudify.configure do |config|
+  ## Cloudify supports the following providers: aws, google, ninefold and rackspace
   ## For more information on which parameters are required for each provider, visit http://fog.io/1.0.0/storage/
   ## Provider examples:
     

@@ -10,7 +10,7 @@
 # google_storage_access_key_id: GOOGLE_STORAGE_ACCESS_KEY_ID
 # google_storage_secret_access_key: GOOGLE_STORAGE_SECRET_ACCESS_KEY
 
-## CloudStorageSync supports the following providers: aws, google, ninefold and rackspace
+## Cloudify supports the following providers: aws, google, ninefold and rackspace
 ## For more information on which parameters are required for each provider, visit http://fog.io/1.0.0/storage/
 
 defaults: &defaults

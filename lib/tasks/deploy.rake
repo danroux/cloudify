@@ -1,8 +1,8 @@
-namespace :cloud_storage_sync do
+namespace :cloudify do
   desc "sync assets"
-  task :sync_assets => :environment do
-    puts "*** Syncing with #{CloudStorageSync.config.provider} ***"
-    CloudStorageSync.sync
+  task :sync => :environment do
+    puts "*** Syncing with #{Cloudify.config.provider} ***"
+    Cloudify.sync
   end
 end
          
