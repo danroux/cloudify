@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["amed@tractical.com", "javier@tractical.com", "daniel@tractical.com"]
   s.homepage    = ""
   s.summary     = %q{Sync assets hosts}
-  s.description = %q{Sync your assets hosts to Amazon & Rackspace services}
+  s.description = %q{Sync your assets hosts to Amazon, Google & Rackspace services}
 
   s.rubyforge_project = "cloudify"
 
