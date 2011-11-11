@@ -8,6 +8,44 @@ describe CloudStorageSync::Config  do
   end
 end
 
+describe CloudStorageSync do
+  before(:each) do
+    @config = CloudStorageSync.config
+  end
+
+  context "invalid configuration" do
+    context "missing required files" do
+      it "should not be valid when google" do
+        @config.provider = "google"
+        @config.should_not be_valid
+        @config.errors[:google_storage_access_key_id].should_not be_empty
+        @config.errors[:google_storage_secret_access_key].should_not be_empty
+      end
+
+      it "should not be valid when aws" do
+        @config.provider = "aws"
+        @config.should_not be_valid
+        @config.errors[:aws_secret_access_key].should_not be_empty
+        @config.errors[:aws_access_key_id].should_not be_empty
+      end
+
+      it "should not be valid when rackspace" do
+        @config.provider = "rackspace"
+        @config.should_not be_valid
+        @config.errors[:rackspace_username].should_not be_empty
+        @config.errors[:rackspace_api_key].should_not be_empty
+      end
+
+      it "should not be valid when ninefold" do
+        @config.provider = "ninefold"
+        @config.should_not be_valid
+        @config.errors[:ninefold_storage_token].should_not be_empty
+        @config.errors[:ninefold_storage_secret].should_not be_empty
+      end
+    end
+  end
+end
+
 describe CloudStorageSync, 'with #configure(initializer)' do
   before(:all) do
     CloudStorageSync.configure do |config|
@@ -37,28 +75,13 @@ describe CloudStorageSync, 'with #configure(initializer)' do
     @storage.credentials[:aws_secret_access_key].should == "111222333444"
     @storage.credentials[:aws_access_key_id].should     == "qwerty1234567890"
   end
-  
+
   it "loads buckets" do
     @storage.bucket.should_not be_nil
   end
 
   it "syncs to aws" do
     expect{ CloudStorageSync.sync }.should_not raise_error
-  end
-
-  it "requires valid configuration fields" do
-    CloudStorageSync.config.provider = "rackspace"
-    expect{ CloudStorageSync.sync}.to raise_error(ArgumentError, 
-                                                  "Rackspace requires rackspace_api_key, rackspace_username in configuration files")
-    CloudStorageSync.config.provider = "google"
-    expect{ CloudStorageSync.sync}.to raise_error(ArgumentError, 
-                                                  "Google requires google_storage_access_key_id, google_storage_secret_access_key in configuration files")
-    CloudStorageSync.config.provider = "ninefold"
-    expect{ CloudStorageSync.sync}.to raise_error(ArgumentError, 
-                                                  "Ninefold requires ninefold_storage_token, ninefold_storage_secret in configuration files")
-    CloudStorageSync.config.provider = "best_cloud_service"
-    expect{ CloudStorageSync.sync}.to raise_error(ArgumentError, 
-                                                  "best_cloud_service is not a recognized storage provider")
   end
 
   context "Connect to each service supported" do

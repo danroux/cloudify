@@ -16,8 +16,11 @@ module CloudStorageSync
 
     def sync
       config.validate
-      raise Config::Invalid.new(config.errors.full_messages.join(', ')) unless config && config.valid?
-      storage.sync
+      if config && config.valid?
+        storage.sync
+      else
+        "CloudStorageSync: Something went wrong"
+      end
     end
   end
 end
