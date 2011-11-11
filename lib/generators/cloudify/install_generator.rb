@@ -1,7 +1,7 @@
 require 'rails/generators'
-module CloudStorageSync
+module Cloudify
   class InstallGenerator < Rails::Generators::Base
-    desc "Install a config/cloud_storage_sync.yml and the rake task enhancer"
+    desc "Install a config/cloudify.yml and the rake task enhancer"
 
     def self.source_root
       @source_root ||= File.join(File.dirname(__FILE__), 'templates')
@@ -13,11 +13,11 @@ module CloudStorageSync
     end
 
     def generate_config
-      template "cloud_storage_sync.yml", "config/cloud_storage_sync.yml"
+      template "cloudify.yml", "config/cloudify.yml"
     end
 
     def generate_rake_task
-      template "cloud_storage_sync.rake", "lib/tasks/cloud_storage_sync.rake"
+      template "cloudify.rake", "lib/tasks/cloudify.rake"
     end
   end
 end

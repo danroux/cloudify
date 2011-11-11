@@ -1,3 +1,3 @@
-module CloudStorageSync
+module Cloudify
   VERSION = "0.0.2"
 end

@@ -1,4 +1,4 @@
-module CloudStorageSync
+module Cloudify
   class Config
     include ActiveModel::Validations
     DYNAMIC_SERVICES = [:provider, 

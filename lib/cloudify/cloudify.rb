@@ -1,4 +1,4 @@
-module CloudStorageSync
+module Cloudify
 
   class << self
 
@@ -19,7 +19,7 @@ module CloudStorageSync
       if config && config.valid?
         storage.sync
       else
-        "CloudStorageSync: Something went wrong"
+        "Cloudify: Something went wrong"
       end
     end
   end

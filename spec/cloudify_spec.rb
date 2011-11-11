@@ -1,16 +1,16 @@
 require File.dirname(__FILE__) + '/spec_helper'
 
-describe CloudStorageSync::Config  do
+describe Cloudify::Config  do
   it "should have each DYNAMIC_SERVICES accessor for configuration" do
-    CloudStorageSync::Config::DYNAMIC_SERVICES.each do |service_config|
+    Cloudify::Config::DYNAMIC_SERVICES.each do |service_config|
       should respond_to(service_config)
     end
   end
 end
 
-describe CloudStorageSync do
+describe Cloudify do
   before(:each) do
-    @config = CloudStorageSync.config
+    @config = Cloudify.config
   end
 
   context "invalid configuration" do
@@ -46,16 +46,16 @@ describe CloudStorageSync do
   end
 end
 
-describe CloudStorageSync, 'with #configure(initializer)' do
+describe Cloudify, 'with #configure(initializer)' do
   before(:all) do
-    CloudStorageSync.configure do |config|
+    Cloudify.configure do |config|
       config.provider = "aws"
       config.aws_secret_access_key = "111222333444"
       config.aws_access_key_id     = "qwerty1234567890"
       config.assets_directory      = "app_test"
     end
 
-    @config = CloudStorageSync.config
+    @config = Cloudify.config
 
     Fog.mock!
     # create a connection
@@ -66,7 +66,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
       :public => true
     )
 
-    @storage = CloudStorageSync.storage
+    @storage = Cloudify.storage
   end
 
   it "loads aws configuration" do
@@ -81,7 +81,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
   end
 
   it "syncs to aws" do
-    expect{ CloudStorageSync.sync }.should_not raise_error
+    expect{ Cloudify.sync }.should_not raise_error
   end
 
   context "Connect to each service supported" do
@@ -90,7 +90,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
     end
 
     it "syncs to google" do
-      CloudStorageSync.configure do |config|
+      Cloudify.configure do |config|
         config.provider = "google"
         config.google_storage_access_key_id = "somegooglekey"
         config.google_storage_secret_access_key = "secret_access_key"
@@ -102,7 +102,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
     end
 
     it "syncs to aws" do
-      CloudStorageSync.configure do |config|
+      Cloudify.configure do |config|
         config.provider = "aws"
         config.aws_access_key_id  = "api_key"
         config.aws_secret_access_key = "username"
@@ -113,7 +113,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
     end
 
     it "syncs to rackspace" do
-      CloudStorageSync.configure do |config|
+      Cloudify.configure do |config|
         config.provider = "rackspace"
         config.rackspace_username = "username"
         config.rackspace_api_key  = "api_key"
@@ -123,7 +123,7 @@ describe CloudStorageSync, 'with #configure(initializer)' do
     end
 
     it "syncs to ninefold" do
-      CloudStorageSync.configure do |config|
+      Cloudify.configure do |config|
         config.provider = "ninefold"
         config.ninefold_storage_token  = "token_key"
         config.ninefold_storage_secret = "secret"
@@ -134,13 +134,13 @@ describe CloudStorageSync, 'with #configure(initializer)' do
   end
 end
 
-describe CloudStorageSync::Storage do
-  YML_FILE_PATH = File.join(File.dirname(__FILE__), 'fixtures', "cloud_storage_sync.yml")
+describe Cloudify::Storage do
+  YML_FILE_PATH = File.join(File.dirname(__FILE__), 'fixtures', "cloudify.yml")
   YML_FILE = File.read(YML_FILE_PATH)
   YML_DIGEST = Digest::MD5.hexdigest(YML_FILE)
 
   before do
-    config = mock(CloudStorageSync::Config)
+    config = mock(Cloudify::Config)
     config.stub(:credentials).and_return(:provider              =>"aws", 
                                          :aws_secret_access_key =>"111222333444", 
                                          :aws_access_key_id     =>"qwerty1234567890")
@@ -148,8 +148,8 @@ describe CloudStorageSync::Storage do
     config.stub(:options).and_return(:assets_directory    => "app_test",
                                      :force_deletion_sync => false)
 
-    CloudStorageSync.stub(:config).and_return(config)
-    @config = CloudStorageSync.config
+    Cloudify.stub(:config).and_return(config)
+    @config = Cloudify.config
   
     Fog.mock!
     # create a connection
@@ -160,7 +160,7 @@ describe CloudStorageSync::Storage do
       :public => true
     )
 
-    @storage = CloudStorageSync::Storage.new(@config.credentials, @config.options)
+    @storage = Cloudify::Storage.new(@config.credentials, @config.options)
   end
 
   it "Uploads a new file and then deletes it" do

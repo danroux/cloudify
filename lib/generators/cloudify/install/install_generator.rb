@@ -1,8 +1,8 @@
 require 'rails'
 if ::Rails.version >= "3.1"
-  module CloudStorageSync
+  module Cloudify
     class InstallGenerator < Rails::Generators::Base
-      desc "This generator installs the files needed for CloudStorageSync configuration"
+      desc "This generator installs the files needed for Cloudify configuration"
       class_option :use_yml, :type => :boolean, :default => false, :desc => "Use YML file instead of Rails Initializer"
       source_root File.expand_path(File.join(File.dirname(__FILE__), '../templates'))
 
@@ -12,7 +12,7 @@ if ::Rails.version >= "3.1"
 
       def generate_initializer
         unless options[:use_yml]
-          template "cloud_storage_sync.rb", "config/initializers/cloud_storage_sync.rb"
+          template "cloudify.rb", "config/initializers/cloudify.rb"
         end
       end
     end
