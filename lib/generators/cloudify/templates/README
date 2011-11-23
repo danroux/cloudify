@@ -1,0 +1,9 @@
+===============================================================================
+Cloudify
+
+Now go to your fresh initializer, configure it and then tell cloudify to sync your assets with the following rake task:
+
+rake cloudify:sync
+
+And that should be it. :)
+===============================================================================
