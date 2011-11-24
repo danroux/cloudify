@@ -25,7 +25,10 @@ module Cloudify
     end
 
     def local_files
-      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map{ |f| Digest::MD5.hexdigest(File.read(f)) }
+      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map do |f| 
+        next if File.directory?(f)
+        Digest::MD5.hexdigest(File.read(f))
+      end
     end
     
     def remote_files
@@ -37,14 +40,11 @@ module Cloudify
       Dir.glob("public/**/*").each do |file|
         if File.file?(file)
           remote_file = file.gsub("public/", "")
-          begin
-            obj = bucket.files.get(remote_file)
-          rescue
-            obj = nil
-          end
-          if !obj || (obj.etag != Digest::MD5.hexdigest(File.read(file)))
+          obj = bucket.files.head(remote_file)
+          get_file = File.open(file)
+          if !obj || (obj.etag != Digest::MD5.hexdigest(get_file.read))
             STDERR.print "U " + file
-            f = bucket.files.create(:key => remote_file, :body => File.open(file), :public => true)
+            f = bucket.files.create(:key => remote_file, :body => get_file, :public => true)
             STDERR.puts " (" + f.etag + ")"
           end
         end
