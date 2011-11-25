@@ -25,14 +25,17 @@ module Cloudify
     end
 
     def local_files
-      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map do |f| 
-        next if File.directory?(f)
-        Digest::MD5.hexdigest(File.read(f))
+      @local_files ||= Dir.glob("#{Rails.root.to_s}/public/**/*").map do |f|         
+        Digest::MD5.hexdigest(File.read(f)) unless File.directory?(f)
       end
     end
     
     def remote_files
-      @remote_files ||= bucket.files.map{ |f| f.etag }
+      @remote_files ||= bucket.files.reload.map{ |f| f.etag }
+    end
+
+    def files_to_delete
+      @files_to_delete ||= (local_files | remote_files) - (local_files & remote_files)
     end
 
     def upload_new_and_changed_files
@@ -53,7 +56,6 @@ module Cloudify
 
     def delete_unsynced_remote_files
       STDERR.puts "Deleting remote files that no longer exist locally"
-      files_to_delete = (local_files | remote_files) - (local_files & remote_files)
       bucket.files.each do |f|
         if files_to_delete.include?(f.etag)
           STDERR.puts "D #{f.key}"
@@ -67,6 +69,5 @@ module Cloudify
       delete_unsynced_remote_files if options[:force_deletion_sync] == true
       STDERR.puts "Done"
     end
-
   end
 end

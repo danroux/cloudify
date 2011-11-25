@@ -178,6 +178,20 @@ describe Cloudify::Storage do
     @storage = Cloudify::Storage.new(@config.credentials, @config.options)
   end
 
+  it "Uploads a collection of files for the 1st time and doesn't delete them" do
+    this_file = File.read(__FILE__)
+    this_file_digest = Digest::MD5.hexdigest(this_file)
+    this_file_path   = __FILE__
+    files = @storage.stub(:local_files).and_return([YML_DIGEST, this_file_digest])
+    Dir.stub(:glob).and_return([YML_FILE_PATH, this_file_path])
+    @storage.local_files.length.should  == 2
+    @storage.options[:force_deletion_sync] = true
+    Fog::Storage::AWS::File.any_instance.stub(:etag).and_return(YML_DIGEST)
+    @storage.sync
+    @storage.bucket.files.reload.length.should == 2
+    @storage.bucket.files.each { |k| k.destroy }
+  end
+
   it "Uploads a new file and then deletes it" do
     @storage.stub(:local_files).and_return([YML_DIGEST])
     Dir.stub(:glob).and_return([YML_FILE_PATH])
