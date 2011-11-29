@@ -14,9 +14,15 @@ module Cloudify
       @storage ||= Storage.new(config.credentials, config.options)
     end
 
+    def invalidator
+      @invalidator ||= Invalidator.new
+    end
+
     def sync
       if config && config.valid?
+        invalidator
         storage.sync
+        invalidator.invalidate_paths
       elsif config && !config.valid?
         STDERR.puts "Cloudify: #{config.errors.full_messages.join(', ')}"
       else

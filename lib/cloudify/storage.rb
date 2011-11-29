@@ -47,7 +47,8 @@ module Cloudify
           get_file = File.open(file)
           if !obj || (obj.etag != Digest::MD5.hexdigest(get_file.read))
             STDERR.print "U " + file
-            f = bucket.files.create(:key => remote_file, :body => get_file, :public => true)
+            Cloudify.invalidator << "/#{obj.key}" if obj
+            f = bucket.files.create(:key => remote_file, :body => get_file, :public => true, :expires => Time.now)
             STDERR.puts " (" + f.etag + ")"
           end
         end

@@ -10,6 +10,7 @@ end
 
 describe Cloudify do
   before(:each) do
+    Cloudify.config.credentials.clear
     @config = Cloudify.config
   end
 
@@ -150,10 +151,6 @@ describe Cloudify, 'with #configure(initializer)' do
 end
 
 describe Cloudify::Storage do
-  YML_FILE_PATH = File.join(File.dirname(__FILE__), 'fixtures', "cloudify.yml")
-  YML_FILE = File.read(YML_FILE_PATH)
-  YML_DIGEST = Digest::MD5.hexdigest(YML_FILE)
-
   before do
     config = mock(Cloudify::Config)
     config.stub(:credentials).and_return(:provider              =>"aws", 

@@ -10,7 +10,7 @@ module Cloudify
                         :endpoint, :region, :host, :path, :port, :scheme, :persistent]
     PROVIDERS = ["aws", "google", "rackspace", "ninefold"]
 
-    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory, :config_path
+    attr_accessor :provider, :force_deletion_sync, :credentials, :assets_directory, :config_path, :distribution_id
     
     validates_presence_of  :assets_directory
     validates_presence_of  :google_storage_access_key_id, :google_storage_secret_access_key, :if => Proc.new { |con| con.provider == "google" }
