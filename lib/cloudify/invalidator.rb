@@ -28,8 +28,19 @@ module Cloudify
     def invalidate_paths
       return if !self.valid? || !paths.any?
       STDERR.puts "Invalidating paths: #{paths.join(", ")}"
-      fog.post_invalidation(distribution_id, paths).tap do |response|
-        puts " - Invalidation Id: #{response.body['Id']}\n"
+      fog.purge_from_cdn distribution_id, paths.first
+      #fog.post_invalidation(distribution_id, paths).tap do |response|
+      #  puts " - Invalidation Id: #{response.body['Id']}\n"
+      #end
+    end
+
+    private
+    def invalidation_method
+      case fog
+        when Fog::CDN::AWS::Real
+          :post_invalidation
+        when Fog::CDN::Rackspace::Real
+          :purge_from_cdn
       end
     end
   end
