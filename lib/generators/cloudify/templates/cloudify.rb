@@ -28,4 +28,9 @@ Cloudify.configure do |config|
 
   # Change this to true if you want to delete files that don't exist locally anymore.
   config.force_deletion_sync = false
+
+  # If you have enabled CloudFront on your S3 account or the CDN on Rackspace, 
+  # specify the distrubition_id(S3) or the domain( Rackspace) from which you would like to invalidate paths.
+  # with the following attribute.
+  # config.distribution_id     = "xxxxxxxx"
 end

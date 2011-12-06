@@ -10,6 +10,13 @@ module Cloudify
 
     def paths
       @paths ||= []
+
+      def @paths.<< path
+        raise ArgumentError unless path.kind_of? String
+        return self if self.include?(path)
+        super
+      end
+      @paths
     end
 
     def << path
@@ -28,19 +35,33 @@ module Cloudify
     def invalidate_paths
       return if !self.valid? || !paths.any?
       STDERR.puts "Invalidating paths: #{paths.join(", ")}"
-      fog.purge_from_cdn distribution_id, paths.first
-      #fog.post_invalidation(distribution_id, paths).tap do |response|
-      #  puts " - Invalidation Id: #{response.body['Id']}\n"
-      #end
+      send(invalidation_method)
     end
 
     private
     def invalidation_method
       case fog
         when Fog::CDN::AWS::Real
-          :post_invalidation
+          :exec_post_invalidation
         when Fog::CDN::Rackspace::Real
-          :purge_from_cdn
+          :exec_purge_from_cdn
+      end
+    end
+
+    def exec_post_invalidation
+      fog.post_invalidation(distribution_id, paths).tap do |response|
+        puts " - Invalidation Id: #{response.body['Id']}\n"
+      end
+    end
+
+    def exec_purge_from_cdn
+      begin
+        paths.each do |path|
+          @_path = path
+          fog.purge_from_cdn distribution_id, path
+        end
+      rescue StandardError => e
+        "Error Unable to Purge Object: #{@_path}" 
       end
     end
   end
