@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "mocha", ">= 0.10.0"
   s.add_development_dependency "ruby-debug19"
 
-#  s.add_dependency "fog", ">= 1.0.0"
+  s.add_dependency "fog_tractical", ">= 1.0.0"
   s.post_install_message = "Thanks for installing!"
 end
