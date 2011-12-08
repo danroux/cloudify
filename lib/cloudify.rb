@@ -1,4 +1,4 @@
-#require 'fog'
+require 'fog'
 require 'active_model'
 require 'erb'
 require "cloudify/cloudify"
