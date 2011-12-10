@@ -32,5 +32,10 @@ Cloudify.configure do |config|
   # If you have enabled CloudFront on your S3 account or the CDN on Rackspace, 
   # specify the distrubition_id(S3) or the domain( Rackspace) from which you would like to invalidate paths.
   # with the following attribute.
-  # config.distribution_id     = "xxxxxxxx"
+  #
+  # In the case of S3 your distribution_id is a 14 hexadecimal code, which you get when you enable CloudFront in your AWS Management Console
+  # config.distribution_id     = "E15MB6BG83O04N"
+  #
+  # For Rackspace it's a domain that you get when you create your container, example:
+  # config.distribution_id = "c266655.r55.cf1.rackcdn.com"
 end

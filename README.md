@@ -43,6 +43,12 @@ If you have config.force_deletion_sync set to true, you would get an output like
 
 And that's it.
 
+#### Invalidation of paths
+
+Cloudify invalidates paths for you when you upload an updated version of a file. All you need to do is to add the distribuition_id configuration option to the initializer. You can find more info and examples on the generated template.
+
+    config.distribution_id = "E15MB6BG83O04N"
+
 ## Questions?
 
 If you have any questions, please feel free to contact us on Twitter: [Tractical](http://twitter.com/tractical), [Amed Rodriguez](http://twitter.com/amedse), [Javier Saldaña](http://twitter.com/javiersaldana), [Daniel Roux](http://twitter.com/danroux).
